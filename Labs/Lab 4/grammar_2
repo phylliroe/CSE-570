@@ -1,0 +1,11 @@
+A string a's and b's where the number of a's and b's is uneven
+
+S -> E
+E -> 0 A
+E -> 1 B
+A -> 0 E
+A -> 1 B B
+A -> 0
+B -> 1 E
+B -> 0 A A
+B -> 1

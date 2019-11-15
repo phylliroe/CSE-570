@@ -12,9 +12,11 @@ Look at each grammar and determine if they are SLR. If they are not, state where
 
 int main()
 {
+    // Prompt the user to enter the grammar
     vector<Production*> grammar;
     get_input(grammar);
 
+    // Calculate the canonical LR(0) sets
     set<State*> states = canonical(grammar);
 
     cout << endl;

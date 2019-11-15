@@ -3,7 +3,7 @@ Name: Andrew Loop-Perez
 ID: 006198799
 Course: CSE 570 Fall 2019
 Filename: state.h
-Assignment: Lab 3
+Assignment: Lab 4
 Description: Header file for the State class. State object is used to represent the various LR(0) items generated
 for a given grammar
 */

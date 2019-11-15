@@ -3,7 +3,7 @@ Name: Andrew Loop-Perez
 ID: 006198799
 Course: CSE 570 Fall 2019
 Filename: parse.cpp
-Assignment: Lab 3
+Assignment: Lab 4
 Description: Definitions for the parsing functions.
 */
 

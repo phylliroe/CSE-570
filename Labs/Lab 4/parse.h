@@ -3,7 +3,7 @@ Name: Andrew Loop-Perez
 ID: 006198799
 Course: CSE 570 Fall 2019
 Filename: parse.h
-Assignment: Lab 3
+Assignment: Lab 4
 Description: Header file for the various parsing functions. Contains the functions used for generating the 
 First and Follow sets and the canonical LR(0) sets of a given grammar
 */

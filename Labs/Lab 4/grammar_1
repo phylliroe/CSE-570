@@ -1,7 +1,9 @@
-A string of a's and b' where the string is a palindrome.
+A string of 1's and 0's where the string is a palindrome.
 
 S -> A
 A -> 0 A 0
 A -> 1 A 1
 A -> 1
 A -> 0
+
+The grammar is not SLR. There is a shift-reduce conflict in State 2 and State 3. 

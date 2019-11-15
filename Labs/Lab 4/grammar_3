@@ -1,0 +1,11 @@
+String of 1's and 0's in the form xx. If x = 1, the string is "11". If x = 0, the string is "00"
+
+S -> E
+E -> A
+E -> B
+A -> 1 C
+B -> 0 D
+C -> 1
+D -> 0
+
+The grammar is SLR. There are no conflicts. 

@@ -15,6 +15,7 @@ int yywrap();
 %type <a> expr number DIGIT
 %type <c> LETTER
 %token DIGIT LETTER
+%token EXIT
 %left '|'
 %left '&'
 %left '+' '-'
@@ -67,6 +68,9 @@ expr: '(' expr ')' {
         $$ = regs[$1];
       }
     | number;
+    | EXIT {
+        return EXIT;
+      }
 
 number: DIGIT {
           $$ = $1;

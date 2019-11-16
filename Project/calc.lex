@@ -27,3 +27,7 @@ extern YYSTYPE yylval;
   c = yytext[0];
   return(c);
 }
+
+EXIT {
+   return EXIT;
+}

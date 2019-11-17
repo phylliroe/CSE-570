@@ -14,7 +14,7 @@ For example:
 
 # Compile 
 1. ```lex calc.lex```
-2. ```yacc -d calc.yacc````
+2. ```yacc -d calc.yacc```
 3. ```cc lex.yy.c y.tab.c -o [output name]```
 
 # Run 

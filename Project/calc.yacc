@@ -5,6 +5,7 @@ int base;
 int yylex();
 int yyerror(char *s);
 int yywrap();
+double last;
 %}
 
 %start list
@@ -42,24 +43,47 @@ expr: '(' expr ')' {
       }
     | expr '*' expr {
         $$ = $1 * $3;
+	last = $$;
+      }
+    | '*' expr {
+	$$ = last * $2;
+	last = $$;
       }
     | expr '/' expr {
         $$ = $1 / $3;
+	last = $$;
+      }
+    | '/' expr {
+	$$ = last / $2;
+	last = $$;
       }
     | expr '%' expr {
         $$ = $1 % $3;
+	last = $$;
       }
     | expr '+' expr {
         $$ = $1 + $3;
+	last = $$;
+      }
+    | '+' expr {
+        $$ = last + $2;
+        last = $$;              
       }
     | expr '-' expr {
         $$ = $1 - $3;
+	last = $$;
+      }
+    | '-' expr {
+	$$ = last - $2;
+	last = $$;
       }
     | expr '&' expr {
         $$ = $1 & $3;
+	last = $$;
       }
     | expr '|' expr {
         $$ = $1 | $3;
+	last = $$;
       }
     | '-' expr %prec UMINUS {
         $$ = -$2;

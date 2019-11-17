@@ -5,7 +5,7 @@ int base;
 int yylex();
 int yyerror(char *s);
 int yywrap();
-double last;
+int last;
 %}
 
 %start list
@@ -81,8 +81,16 @@ expr: '(' expr ')' {
         $$ = $1 & $3;
 	last = $$;
       }
+    | '&' expr {
+	$$ = last & $2;
+	$$ = last;
+      }
     | expr '|' expr {
         $$ = $1 | $3;
+	last = $$;
+      }
+    | '|' expr {
+	$$ = last | $2;
 	last = $$;
       }
     | '-' expr %prec UMINUS {

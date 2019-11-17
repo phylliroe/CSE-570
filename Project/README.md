@@ -10,7 +10,7 @@ a=5
 a
 5
 ```
-Added feature to save most recent calculation. Enter argument with no left hand side to use that value.  
+Added feature to save most recent calculation. Enter argument with no left hand side to use that value as the left hand side.  
 For example:
 ```
 5*2

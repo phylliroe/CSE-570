@@ -12,6 +12,7 @@ for a given grammar
 #define STATE_H
 
 #include <set>
+#include <map>
 #include "productions.cpp"
 
 class State
@@ -24,6 +25,10 @@ class State
         // Contains the number of the state
         // State I0, I1, I2, etc
         int state_number;
+
+        // Contains the next GOTO state for each non-terminal character after the dot
+        // in this state.
+        map<char, int> gotostates;
 
         // Change any productions in the state that are in the form: A->.e into A->.
         void epsilon()
@@ -204,7 +209,6 @@ class State
             return p;
         }
 
-
         // Take a Production p and a vector of productions v as input
         // If there is a production in v such that the left and right hand sides of that production
         // are equal to the left and right hand sides of p, return true. Otherwise, return false.
@@ -223,6 +227,31 @@ class State
 
             return false;
         }
+
+        void add_goto_state(char c, int i)
+        {
+            gotostates.insert( pair<char, int>(c,i) );
+        }
+
+        bool check_goto_states(const int j) const
+        {
+            for (auto elem : gotostates)
+            {
+                if (elem.second == j)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 };
 
 #endif
+
+
+
+
+
+
+

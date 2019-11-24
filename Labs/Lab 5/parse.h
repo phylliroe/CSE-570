@@ -62,6 +62,6 @@ vector<Production*> do_goto(State* s, char x);
 void get_char_after_dot(const vector<Production*> v, vector<Production*> &new_kernel, const char x);
 void printstates(set<State*> states);
 vector<char> getcharlist(State* s);
-bool state_exists(const vector<Production*> new_kernel, const set<State*> states);
+bool state_exists(const vector<Production*> new_kernel, const set<State*> states, int& state_number);
 
 #endif 

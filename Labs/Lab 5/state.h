@@ -50,7 +50,7 @@ class State
         {}
 
         // Initialize the state number to "num" and the kernel to "new_kernel"
-        State( int num, vector<Production*> new_kernel)
+        State( int num, vector<Production*> new_kernel )
         {
             state_number = num;
             kernel = new_kernel;
@@ -230,7 +230,28 @@ class State
 
         void add_goto_state(char c, int i)
         {
-            gotostates.insert( pair<char, int>(c,i) );
+            if (!check_goto_states(c))
+                gotostates.insert( pair<char, int>(c,i) );
+        }
+
+        int goto_size() const
+        {
+            return gotostates.size();
+        }
+
+        void printgoto() const
+        {
+            if (gotostates.empty())
+            {
+                cout << state_number << endl;
+            }
+            else
+            {
+                for (auto elem : gotostates)
+                {
+                    cout << state_number << ", " << elem.first << ", " << elem.second << endl;
+                }
+            }
         }
 
         bool check_goto_states(const int j) const

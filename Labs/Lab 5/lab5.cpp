@@ -1,5 +1,7 @@
 #include "parse.h"
 
+typedef map< int, map<char, string> > actionmap; 
+
 int main()
 {
     vector<Production*> cfg;
@@ -7,6 +9,8 @@ int main()
     mapset first_sets;
     mapset follow_sets;
     vector<char> map_order;
+
+    actionmap action;
 
     cfg.push_back(new Production()); // s
     cfg.push_back(new Production()); // e
@@ -38,11 +42,24 @@ int main()
     first(cfg, first_sets);
     follow(cfg, follow_sets, first_sets, map_order);
 
-    print_sets(follow_sets, map_order, "FOLLOW");
+    //print_sets(follow_sets, map_order, "FOLLOW");
 
     states = canonical(cfg);
 
+    cout << endl;
+
     //printstates(states);
+
+    set<State*>::iterator itr = states.begin();
+
+    while ( itr != states.end()) 
+    {
+        //cout << (*itr)->goto_size() << endl;
+        (*itr)->printgoto();
+        cout << endl;
+
+        ++itr;
+    }
 
     return 0;
 }

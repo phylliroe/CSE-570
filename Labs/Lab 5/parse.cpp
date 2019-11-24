@@ -325,6 +325,7 @@ set<State*> canonical(const vector<Production*> v)
     int state_num = 0; // Number of a state. Starts at zero for State I0
     char current_char;
     bool changed;
+    int int_state;
 
     // Create the kernel of the intital State I0 and add it to the set
     new_kernel.push_back( get_initial(v) );
@@ -363,7 +364,7 @@ set<State*> canonical(const vector<Production*> v)
                 new_kernel = do_goto( (*itr), current_char );
 
                 // If a State with a kernel that matches new_kernel does not exist in the set
-                if (!state_exists(new_kernel, items))
+                if (!state_exists(new_kernel, items, int_state))
                 {
                     // Add a new State to the set with new_kernel as the kernel
                     items.insert( new State(state_num, new_kernel) ); 
@@ -378,9 +379,18 @@ set<State*> canonical(const vector<Production*> v)
                     state_num++; // Increment the state number
                     new_kernel.clear(); // Clear the values from new_kernel
                     changed = true; // Changes were made
+
+                    (*itr)->add_goto_state(current_char, int_state);
+                    //(*itr)->printgoto();
                 }
+                else
+                {
+                    (*itr)->add_goto_state(current_char, int_state);
+                }
+                
             }
 
+            //cout << (*itr)->get_state_number() << ", " << (*itr)->goto_size() << endl;
             ++itr; // Move to next State in the set
         }
     } 
@@ -486,7 +496,7 @@ vector<char> getcharlist(State* s)
 
 // Check if a State with a given kernel already exists in the set
 // Return TRUE if such a State already exists in the set. Return FALSE is no such State exists
-bool state_exists(const vector<Production*> new_kernel, const set<State*> states)
+bool state_exists(const vector<Production*> new_kernel, const set<State*> states, int& state_number)
 {
     /* 
     Loop through each State in the set. 
@@ -504,6 +514,7 @@ bool state_exists(const vector<Production*> new_kernel, const set<State*> states
     for(set<State*>::iterator itr = states.begin(); itr != states.end(); itr++)
     {
         v = (*itr)->get_kernel(); // Kernel of the current State
+        state_number = ( (*itr)->get_state_number() + 1);
 
         // Check if the kernel of the state and new_kernel contain the same number of proudctions
         // If they are not, add a FALSE to the bool vector
@@ -532,7 +543,10 @@ bool state_exists(const vector<Production*> new_kernel, const set<State*> states
 
         // If all of the elements in the bool vector are TRUE, return TRUE
         if ( find(bool_result.begin(), bool_result.end(), false) == bool_result.end() )
+        {
+            state_number -= 1;
             return true;
+        }
 
         bool_result.clear(); // Clear the bool vector for the next iteration
     }

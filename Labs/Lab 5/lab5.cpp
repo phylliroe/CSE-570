@@ -6,7 +6,8 @@ bool check_terminal(Production* p, char&c);
 actionmap get_action(const set<State*> states);
 bool check_at_end(Production *p);
 actionmap get_action(const set<State*> states, mapset follow, State* s);
-void print_action(actionmap action);
+void print_action(const actionmap action, const set<State*> states, const vector<char>order);
+void print_goto(const vector<char> order, const set<State*> states, int state_num);
 
 bool check_terminal(Production* p, char& c)
 {
@@ -90,10 +91,7 @@ void calc_action(map<char, string>& state_actions, vector<Production*> v, int i,
                     state_actions.insert( pair<char, string>(current_char, shift) );
                 }
             }
-        }
-
-
-        
+        }   
     }
 }
 
@@ -157,7 +155,7 @@ actionmap get_action(const set<State*> states, mapset follow)
     return actions;
 }
 
-void print_action(actionmap action)
+void print_action(const actionmap action, const set<State*> states, const vector<char>order)
 {
     for (auto elem : action)
     {
@@ -170,8 +168,40 @@ void print_action(actionmap action)
             cout << a.first << ": " << a.second << endl;
         }
 
+        print_goto(order, states, elem.first);
+
         cout << endl;
     }
+}
+
+void print_goto(vector<char> order, const set<State*> states, int state_num)
+{
+    int next;
+
+    cout << "GOTO: " << endl;
+
+    for (auto i : states)
+    {
+        if (i->get_state_number() == state_num)
+        {
+            for (int j = 0; j < order.size(); j++)
+            {
+                cout << order[j] << ": ";
+        
+                if (i->check_goto_states(j))
+                {
+                    next = i->get_goto(order[j]);
+
+                    if (next != '\0')
+                    {
+                        cout << next << endl;
+                    }
+                }
+            }
+        }
+    }
+
+    cout << endl;
 }
 
 int main()
@@ -224,7 +254,7 @@ int main()
 
     set<State*>::iterator itr = states.begin();
 
-/*
+
     while ( itr != states.end()) 
     {
         //cout << (*itr)->goto_size() << endl;
@@ -233,7 +263,6 @@ int main()
 
         ++itr;
     }
-*/
 
     action = get_action(states, follow_sets);
     cout << action.size() << endl;
@@ -249,7 +278,7 @@ int main()
 
     cout << endl;
 
-    print_action(action);
+    print_action(action, states, map_order);
 
     return 0;
 }

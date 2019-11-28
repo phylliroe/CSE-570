@@ -279,6 +279,17 @@ class State
 
             return -1;
         }
+
+        char goto_char(char c)
+        {
+            for (auto elem : gotostates)
+            {
+                if (elem.first == c)
+                    return elem.first;
+            }
+
+            return '\0';
+        }
 };
 
 #endif

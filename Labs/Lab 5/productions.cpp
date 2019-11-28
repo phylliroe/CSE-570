@@ -48,6 +48,16 @@ struct Production
         return index;
     }
 
+    bool at_end()
+    {
+        int index = find_dot();
+
+        if ( index == (right.size() - 1) )
+            return true;
+        
+        return false;
+    }
+
     // Return the character that comes directly after the dot in the RHS
     // If the dot is at the end of the productions, returns '\0'
     char after_dot()
@@ -63,6 +73,13 @@ struct Production
         }
 
         return '\0';
+    }
+
+    char before_dot()
+    {
+        int prev = ( find_dot() - 1 );
+
+        return right[prev];
     }
 
     // Increment the dot's position by one

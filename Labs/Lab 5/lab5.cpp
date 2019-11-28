@@ -2,6 +2,11 @@
 
 typedef map< int, map<char, string> > actionmap; 
 
+bool check_terminal(Production* p, char&c);
+actionmap get_action(const set<State*> states);
+bool check_at_end(Production *p);
+actionmap get_action(const set<State*> states, mapset follow, State* s);
+void print_action(actionmap action);
 
 bool check_terminal(Production* p, char& c)
 {
@@ -15,44 +20,156 @@ bool check_terminal(Production* p, char& c)
     return false;
 }
 
-actionmap get_action(const set<State*> states)
+bool check_at_end(Production* p)
+{
+    //char c = p->after_dot();
+    return p->at_end();
+}
+
+void calc_action(map<char, string>& state_actions, vector<Production*> v, int i, mapset follow, State* s)
+{
+    int j;
+    char j_char, current_char, prev, next;
+    string shift, reduce;
+
+    for (vector<Production*>::iterator itr = v.begin(); itr != v.end(); itr++)
+    {
+        // If A -> a.
+        if (check_at_end( (*itr) ))
+        {
+            prev = (*itr)->before_dot();
+
+            // If A->a. where a is terminal
+            if ( !isupper(prev) )
+            {
+                current_char = prev;
+                reduce = "r";
+                reduce += current_char;
+                state_actions.insert( pair<char, string>(current_char, reduce) );
+            }
+            // If A-> a. where a is nonterminal
+            else
+            {
+                if ((*itr)->left == 'S')
+                {
+                    state_actions.insert( pair<char, string>('$', "accept") );
+                }
+                else
+                {
+                    for (auto prod : follow)
+                    {
+                        if (prod.first == (*itr)->left)
+                        {
+                            for (auto terminal : prod.second)
+                            {
+                                reduce = "r";
+                                reduce += terminal;
+                                state_actions.insert( pair<char, string>(terminal, reduce) );
+                            }
+                        }
+                    }       
+                }
+            }
+        }
+        // If A -> ?.a?
+        else
+        {
+            next = (*itr)->after_dot();
+
+            if ( !isupper(next) )
+            {
+                j = s->get_goto(next);
+
+                if ( (j != -1) && (j != i) )
+                {
+                    current_char = next;
+                    shift = "shift ";
+                    j_char = (char)j;
+                    shift += to_string(j);
+
+                    state_actions.insert( pair<char, string>(current_char, shift) );
+                }
+            }
+        }
+        
+    }
+}
+
+actionmap get_action(const set<State*> states, mapset follow)
 {
     actionmap actions;
     int i, j;
-    char j_char;
-    char current_char;
+    char j_char, current_char, prev;
     map<char, string> state_actions;
+    string shift, reduce;
 
     for (set<State*>::iterator state_itr = states.begin(); state_itr != states.end(); state_itr++)
     {
         i = (*state_itr)->get_state_number();
 
-        // ONE FUNCTION FOR KERNEL AND CLOSURE
-        for (vector<Production*>::iterator kernel_itr = (*state_itr)->get_kernel().begin(); kernel_itr != (*state_itr)->get_kernel().end(); kernel_itr++)
+        /*
+        // Loop through kernel
+        for (vector<Production*>::iterator k_itr = (*state_itr)->get_kernel().begin(); k_itr != (*state_itr)->get_kernel().end(); k_itr++)
         {
-            if ( check_terminal( (*kernel_itr), current_char) )
+            // If the dot is the last character in the RHS A -> a.
+            if (check_at_end( (*k_itr) ) ) // SEGFAULT
             {
-                j = (*state_itr)->get_goto(current_char);
-                
-                if ( (j != -1) && (j != i) )
+                cout << "AAAAA" << endl;
+                prev = (*k_itr)->before_dot();
+
+                // If A -> a., where a is terminal
+                if ( !isupper(prev) )
                 {
-                    string shift = "shift";
-                    j_char =(char)j;
-
-                    shift += j_char;
-
-                    state_actions.insert(pair<char, string>(current_char, shift));
+                    current_char = prev;
+                    reduce = "r";
+                    reduce += current_char;
+                    state_actions.insert( pair<char, string>(current_char, reduce) );
+                }
+                // If A -> a. where a is nonterminal
+                else
+                {
+                    for (auto prod : follow)
+                    {
+                        if (prod.first == (*k_itr)->left)
+                        {
+                            for (auto terminal : prod.second)
+                            {
+                                reduce = "r";
+                                reduce += terminal;
+                                state_actions.insert( pair<char, string>(terminal, reduce) );
+                            }
+                        }
+                    }
                 }
             }
         }
-        // ONE FUNCTION FOR KERNEL AND CLOSURE
-
-        // CHECK FOR PRODUCTIONS WITH DOT AT END
-
+        */
+        calc_action(state_actions, (*state_itr)->get_kernel(), i, follow, (*state_itr));
+        calc_action(state_actions, (*state_itr)->get_closure(), i, follow, (*state_itr));
+    
+        // Loop through closure
+        actions.insert( pair< int, map<char, string> >(i, state_actions) );
+        state_actions.clear();
     }
-
-
+   
     return actions;
+}
+
+void print_action(actionmap action)
+{
+    for (auto elem : action)
+    {
+        cout << "State: " << elem.first << endl;
+
+        cout << "GOTO: " << endl;
+
+        for (auto a : elem.second)
+        {
+            cout << a.first << ": " << a.second << endl;
+        }
+
+        cout << endl;
+    }
 }
 
 int main()
@@ -105,6 +222,7 @@ int main()
 
     set<State*>::iterator itr = states.begin();
 
+/*
     while ( itr != states.end()) 
     {
         //cout << (*itr)->goto_size() << endl;
@@ -113,6 +231,23 @@ int main()
 
         ++itr;
     }
+*/
+
+    action = get_action(states, follow_sets);
+    cout << action.size() << endl;
+
+    for (auto elem : action)
+    {
+        cout << elem.first << ",";
+
+        cout << elem.second.size();
+
+        cout << endl;
+    }
+
+    cout << endl;
+
+    print_action(action);
 
     return 0;
 }

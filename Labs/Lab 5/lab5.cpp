@@ -43,7 +43,7 @@ void calc_action(map<char, string>& state_actions, vector<Production*> v, int i,
             if ( !isupper(prev) )
             {
                 current_char = prev;
-                reduce = "r";
+                reduce = "reduce ";
                 reduce += current_char;
                 state_actions.insert( pair<char, string>(current_char, reduce) );
             }
@@ -62,7 +62,7 @@ void calc_action(map<char, string>& state_actions, vector<Production*> v, int i,
                         {
                             for (auto terminal : prod.second)
                             {
-                                reduce = "r";
+                                reduce = "reduce ";
                                 reduce += terminal;
                                 state_actions.insert( pair<char, string>(terminal, reduce) );
                             }

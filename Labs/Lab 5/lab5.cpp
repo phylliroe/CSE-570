@@ -91,6 +91,8 @@ void calc_action(map<char, string>& state_actions, vector<Production*> v, int i,
                 }
             }
         }
+
+
         
     }
 }
@@ -161,7 +163,7 @@ void print_action(actionmap action)
     {
         cout << "State: " << elem.first << endl;
 
-        cout << "GOTO: " << endl;
+        cout << "ACTION: " << endl;
 
         for (auto a : elem.second)
         {

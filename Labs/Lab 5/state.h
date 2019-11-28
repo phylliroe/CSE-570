@@ -266,6 +266,19 @@ class State
 
             return false;
         }
+
+        int get_goto(char c) 
+        {
+            for (auto elem : gotostates)
+            {
+                if (elem.first == c)
+                {
+                    return elem.second;
+                }
+            }
+
+            return -1;
+        }
 };
 
 #endif

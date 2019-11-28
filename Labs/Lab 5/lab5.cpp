@@ -2,6 +2,59 @@
 
 typedef map< int, map<char, string> > actionmap; 
 
+
+bool check_terminal(Production* p, char& c)
+{
+    c = p->after_dot();
+
+    if ( (c != '\0') && (!isupper(c)) )
+    {
+        return true;
+    }
+
+    return false;
+}
+
+actionmap get_action(const set<State*> states)
+{
+    actionmap actions;
+    int i, j;
+    char j_char;
+    char current_char;
+    map<char, string> state_actions;
+
+    for (set<State*>::iterator state_itr = states.begin(); state_itr != states.end(); state_itr++)
+    {
+        i = (*state_itr)->get_state_number();
+
+        // ONE FUNCTION FOR KERNEL AND CLOSURE
+        for (vector<Production*>::iterator kernel_itr = (*state_itr)->get_kernel().begin(); kernel_itr != (*state_itr)->get_kernel().end(); kernel_itr++)
+        {
+            if ( check_terminal( (*kernel_itr), current_char) )
+            {
+                j = (*state_itr)->get_goto(current_char);
+                
+                if ( (j != -1) && (j != i) )
+                {
+                    string shift = "shift";
+                    j_char =(char)j;
+
+                    shift += j_char;
+
+                    state_actions.insert(pair<char, string>(current_char, shift));
+                }
+            }
+        }
+        // ONE FUNCTION FOR KERNEL AND CLOSURE
+
+        // CHECK FOR PRODUCTIONS WITH DOT AT END
+
+    }
+
+
+    return actions;
+}
+
 int main()
 {
     vector<Production*> cfg;

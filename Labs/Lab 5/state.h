@@ -228,17 +228,20 @@ class State
             return false;
         }
 
+        // Add a new GOTO to gotostates
         void add_goto_state(char c, int i)
         {
             if (!check_goto_states(c))
                 gotostates.insert( pair<char, int>(c,i) );
         }
 
+        // Return the size of the gotostates map
         int goto_size() const
         {
             return gotostates.size();
         }
 
+        // Print the values of the gotostates map
         void printgoto() const
         {
             if (gotostates.empty())
@@ -254,6 +257,7 @@ class State
             }
         }
 
+        // Check if a state number is already being used as a value in gotostates
         bool check_goto_states(const int j) const
         {
             for (auto elem : gotostates)
@@ -267,6 +271,7 @@ class State
             return false;
         }
 
+        // Get the state number associated with a character in gotostates
         int get_goto(char c) 
         {
             for (auto elem : gotostates)
@@ -278,17 +283,6 @@ class State
             }
 
             return -1;
-        }
-
-        char goto_char(char c)
-        {
-            for (auto elem : gotostates)
-            {
-                if (elem.first == c)
-                    return elem.first;
-            }
-
-            return '\0';
         }
 };
 

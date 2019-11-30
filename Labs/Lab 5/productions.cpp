@@ -3,7 +3,7 @@ Name: Andrew Loop-Perez
 ID: 006198799
 Course: CSE 570 Fall 2019
 Filename: productions.cpp
-Assignment: Lab 3
+Assignment: Lab 5
 Description: Struct used to represent the productions of a grammar
 */
 
@@ -48,6 +48,7 @@ struct Production
         return index;
     }
 
+    // Check if the dot is at the end of the production
     bool at_end()
     {
         int index = find_dot();
@@ -75,6 +76,7 @@ struct Production
         return '\0';
     }
 
+    // Return the character that comes before the dot
     char before_dot()
     {
         int prev = ( find_dot() - 1 );

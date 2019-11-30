@@ -1,0 +1,143 @@
+Questions: 
+1) The grammar is SLR. 
+
+2) That default action would be correct, however there is no need to do so since this grammar is alreadty SLR
+
+Results: 
+State: 0
+ACTION: 
+(: shift 4
+i: shift 5
+GOTO: 
+S: 
+E: 1
+T: 2
+F: 3
+
+
+State: 1
+ACTION: 
+$: accept
++: shift 6
+GOTO: 
+S: 
+E: 
+T: 
+F: 
+
+
+State: 2
+ACTION: 
+$: reduce $
+): reduce )
+*: shift 7
++: reduce +
+GOTO: 
+S: 
+E: 
+T: 
+F: 
+
+
+State: 3
+ACTION: 
+$: reduce $
+): reduce )
+*: reduce *
++: reduce +
+GOTO: 
+S: 
+E: 
+T: 
+F: 
+
+
+State: 4
+ACTION: 
+i: shift 5
+GOTO: 
+S: 
+E: 
+T: 2
+F: 3
+
+
+State: 5
+ACTION: 
+i: reduce i
+GOTO: 
+S: 
+E: 
+T: 
+F: 
+
+
+State: 6
+ACTION: 
+(: shift 4
+i: shift 5
+GOTO: 
+S: 
+E: 
+T: 
+F: 3
+
+
+State: 7
+ACTION: 
+(: shift 4
+i: shift 5
+GOTO: 
+S: 
+E: 
+T: 
+F: 
+
+
+State: 8
+ACTION: 
+): shift 11
++: shift 6
+GOTO: 
+S: 
+E: 
+T: 
+F: 
+
+
+State: 9
+ACTION: 
+$: reduce $
+): reduce )
+*: shift 7
++: reduce +
+GOTO: 
+S: 
+E: 
+T: 
+F: 
+
+
+State: 10
+ACTION: 
+$: reduce $
+): reduce )
+*: reduce *
++: reduce +
+GOTO: 
+S: 
+E: 
+T: 
+F: 
+
+
+State: 11
+ACTION: 
+): reduce )
+GOTO: 
+S: 
+E: 
+T: 
+F: 
+
+

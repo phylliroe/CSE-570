@@ -223,14 +223,14 @@ void print_goto(vector<char> order, const set<State*> states, int state_num)
 
 int main()
 {
-    vector<Production*> cfg;
-    set<State*> states;
-    mapset first_sets;
-    mapset follow_sets;
-    vector<char> map_order;
+    vector<Production*> cfg; // Contains the productions of the grammar
+    set<State*> states; // Contains the different states
+    mapset first_sets; // Containts the first sets
+    mapset follow_sets; // Contains the follow sets
+    vector<char> map_order; // Contains the order of the nonterminal characters in the grammar
+    actionmap action; // Contains the ACTION tables for the grammar
 
-    actionmap action;
-
+    // Create the proudctions for the grammar
     cfg.push_back(new Production()); // S
     cfg.push_back(new Production()); // E
     cfg.push_back(new Production()); // E
@@ -257,28 +257,26 @@ int main()
     cfg[5]->right = {'(', 'E', ')'};
     cfg[6]->right = {'i'};
 
-
+    // Get the order of the nonterminals
     map_order = get_map_order(cfg);
     
+    // Calculate the first and follow sets
     first(cfg, first_sets);
     follow(cfg, follow_sets, first_sets, map_order);
 
-    //print_sets(follow_sets, map_order, "FOLLOW");
-
+    // Get the LR(0) states for the grammar
     states = canonical(cfg);
 
     cout << endl;
 
-    //printstates(states);
-
     set<State*>::iterator itr = states.begin();
 
+    // Get the ACTION tables
     action = get_action(states, follow_sets);
-    
-    //cout << action.size() << endl;
     
     cout << endl;
 
+    // Print the ACTION tables
     print_action(action, states, map_order);
 
     return 0;
